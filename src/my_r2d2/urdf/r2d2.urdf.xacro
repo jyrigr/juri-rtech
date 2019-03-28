@@ -410,4 +410,13 @@
     <origin xyz="0 0 0.47"/>
   </joint>
   
+  <link name="eye">
+  </link>
+  
+  <joint name="lense_to_eye" type="fixed">
+      <parent link="lense"/>
+      <child link="eye"/>
+      <origin rpy="${pi/2} ${pi}  ${pi/2}"/> 
+  </joint>
+  
 </robot>
