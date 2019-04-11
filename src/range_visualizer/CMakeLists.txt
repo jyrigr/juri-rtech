@@ -136,7 +136,9 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/range_visualizer_node.cpp)
-add_executable(random_range_node src/random_range_node.cpp)
+
+#add_executable(random_range_node src/random_range_node.cpp)
+add_executable(sensor_filter src/sensor_filter.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -153,7 +155,9 @@ add_executable(random_range_node src/random_range_node.cpp)
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(random_range_node
+target_link_libraries(
+	#random_range_node
+   sensor_filter
    ${catkin_LIBRARIES}
  )
 
