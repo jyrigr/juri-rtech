@@ -19,7 +19,7 @@ public:
     sub_ = n_.subscribe("/distance/raw", 1000, &SensorFilter::callback, this);
     
     //Initialize vector
-    range_values = std::vector<float>(10);
+    range_values = std::vector<float>(100);
     
   }
 
