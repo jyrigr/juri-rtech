@@ -35,7 +35,7 @@ public:
     rmsg.radiation_type = sensor_msgs::Range::ULTRASOUND;
     
     range_values.insert(range_values.begin(), input->range);
-    range_values.erase(range_values.end());
+    range_values.pop_back();
     
     float range_sum = 0;
     for(std::vector<float>::iterator it = range_values.begin(); it != range_values.end(); ++it) {
@@ -66,7 +66,7 @@ private:
 int main(int argc, char **argv)
 {
   //Initiate ROS
-  ros::init(argc, argv, "random_range_filter");
+  ros::init(argc, argv, "sensor_filter");
 
   //Create an object of class SensorFilter that will take care of everything
   SensorFilter SFObject;
