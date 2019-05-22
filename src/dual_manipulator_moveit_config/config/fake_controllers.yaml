@@ -1,0 +1,33 @@
+controller_list:
+  - name: fake_first_manipulator_controller
+    joints:
+      - 1_joint_s
+      - 1_joint_l
+      - 1_joint_e
+      - 1_joint_u
+      - 1_joint_r
+      - 1_joint_b
+      - 1_joint_t
+  - name: fake_second_manipulator_controller
+    joints:
+      - 2_shoulder_pan_joint
+      - 2_shoulder_lift_joint
+      - 2_elbow_joint
+      - 2_wrist_1_joint
+      - 2_wrist_2_joint
+      - 2_wrist_3_joint
+  - name: fake_dual_manipulator_controller
+    joints:
+      - 1_joint_s
+      - 1_joint_l
+      - 1_joint_e
+      - 1_joint_u
+      - 1_joint_r
+      - 1_joint_b
+      - 1_joint_t
+      - 2_shoulder_pan_joint
+      - 2_shoulder_lift_joint
+      - 2_elbow_joint
+      - 2_wrist_1_joint
+      - 2_wrist_2_joint
+      - 2_wrist_3_joint

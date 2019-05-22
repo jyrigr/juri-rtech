@@ -60,7 +60,7 @@ int main(int argc, char** argv)
   // MoveIt! operates on sets of joints called "planning groups" and stores them in an object called
   // the `JointModelGroup`. Throughout MoveIt! the terms "planning group" and "joint model group"
   // are used interchangably.
-  static const std::string PLANNING_GROUP = "panda_arm";
+  static const std::string PLANNING_GROUP = "sia5";
 
   // The :move_group_interface:`MoveGroup` class can be easily
   // setup using just the name of the planning group you would like to control and plan for.
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
   // The package MoveItVisualTools provides many capabilties for visualizing objects, robots,
   // and trajectories in RViz as well as debugging tools such as step-by-step introspection of a script
   namespace rvt = rviz_visual_tools;
-  moveit_visual_tools::MoveItVisualTools visual_tools("panda_link0");
+  moveit_visual_tools::MoveItVisualTools visual_tools("base_link");
   visual_tools.deleteAllMarkers();
 
   // Remote control is an introspection tool that allows users to step through a high level script
@@ -107,6 +107,43 @@ int main(int argc, char** argv)
   // Start the demo
   // ^^^^^^^^^^^^^^^^^^^^^^^^^
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to start the demo");
+  
+  // Triangular path
+
+  moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+  
+  while (true) {
+    geometry_msgs::Pose target_pose = move_group.getCurrentPose().pose;
+    geometry_msgs::Pose target_pose0 = move_group.getCurrentPose().pose;
+  
+    std::vector<geometry_msgs::Pose> waypoints;
+    waypoints.push_back(target_pose);
+
+    target_pose.position.z -= 0.3;
+    waypoints.push_back(target_pose);  // down
+    
+    target_pose.position.z += 0.3;
+    target_pose.position.y += 0.3;
+    target_pose.position.x -= 0.3;
+    waypoints.push_back(target_pose);  // up and left
+    
+    moveit_msgs::RobotTrajectory trajectory;
+    const double jump_threshold = 0.0;
+    const double eef_step = 0.01;
+    double fraction = move_group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
+    ROS_INFO_NAMED("tutorial", "Cartesian path (%.2f%% acheived)", fraction * 100.0);
+    
+    my_plan.trajectory_ = trajectory;
+    move_group.execute(my_plan);
+    
+    move_group.setPoseTarget(target_pose0);
+    move_group.plan(my_plan);
+    move_group.execute(my_plan);
+    
+    visual_tools.prompt("Again");
+  }
+  
+
 /*
   // Planning to a Pose goal
   // ^^^^^^^^^^^^^^^^^^^^^^^
@@ -137,6 +174,7 @@ int main(int argc, char** argv)
   visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group);
   visual_tools.trigger();
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+  
 
   // Moving to a pose goal
   // ^^^^^^^^^^^^^^^^^^^^^
@@ -151,7 +189,7 @@ int main(int argc, char** argv)
 
   // Uncomment below line when working with a real robot
   // move_group.move(); 
-
+/*
   // Planning to a joint-space goal
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   //
@@ -284,7 +322,7 @@ int main(int argc, char** argv)
   for (std::size_t i = 0; i < waypoints.size(); ++i)
     visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);
   visual_tools.trigger();
-  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+  visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to exit the demo");
 
   // Adding/Removing Objects and Attaching/Detaching Objects
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -385,10 +423,10 @@ int main(int argc, char** argv)
   // Wait for MoveGroup to recieve and process the attached collision object message
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to once the collision object disapears");
 
-*/
+
 
   // END_TUTORIAL
-
+*/
   ros::shutdown();
   return 0;
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot name="dual_motoman_sia5d" xmlns:xacro="http://ros.org/wiki/xacro">
+  
+  <xacro:property name="width" value="1.5" />
+  <xacro:property name="depth" value="0.5" />
+  <xacro:property name="height" value="0.2" />
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="${depth} ${width} ${height}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 ${height / 2}"/>
+      <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="${width} ${depth} ${height}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 ${height / 2}"/>
+    </collision>
+  </link>  
+  
+  <link name="base_footprint">
+  </link>
+  
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+  
+	<xacro:include filename="$(find motoman_sia5d_support)/urdf/sia5d_macro.xacro"/>
+	<xacro:motoman_sia5d prefix="1_"/>
+  <xacro:motoman_sia5d prefix="2_"/>
+  
+  <joint name="1_base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="1_base_link"/>
+    <origin xyz="0 0.5 ${height}"/>
+  </joint>
+  
+  <joint name="2_base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="2_base_link"/>
+    <origin xyz="0 -0.5 ${height}"/>
+  </joint>
+</robot>
+
